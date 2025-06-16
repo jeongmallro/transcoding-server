@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FFmpegCommand {
     private static final String FFMPEG_PATH = "src/main/resources/bin/ffmpeg";
-    private static final String M3U8_FORMAT = "%s/%s.m3u8";
-    private static final String TS_FORMAT = "%s/%s_%%03d.ts";
+    private static final String M3U8_FORMAT = "%s/%s_%%v.m3u8";
+    private static final String TS_FORMAT = "%s/%s_%%v_%%03d.ts";
 
     private final Path dirPath;
     private final String fileName;
