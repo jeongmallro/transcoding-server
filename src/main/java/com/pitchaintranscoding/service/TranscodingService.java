@@ -34,8 +34,14 @@ public class TranscodingService {
                 Process process = ffmpegManager.convert(inputTempFilePath, dirPath, fileNameFormat);
                 printFFmpegLog(process);
 
+                // 프로세스 완료 대기
+                int exitCode = process.waitFor();
+                if (exitCode != 0) {
+                    throw new RuntimeException("FFmpeg failed with exit code: " + exitCode);
+                }
+
                 uploadSegmentsToS3(dirPath, fileNameFormat, spId);
-            } catch (IOException e) {
+            } catch (IOException | InterruptedException e) {
                 log.error("FFmpeg 트랜스코딩 실패", e);
                 throw new RuntimeException("FFmpeg 트랜스코딩 실패", e);
             } finally {
