@@ -27,6 +27,7 @@ public class FFprobeManager {
 
             int exitCode = process.waitFor();
             if (exitCode != 0) {
+                Thread.currentThread().interrupt();
                 throw new RuntimeException("FFprobe failed with exit code: " + exitCode);
             }
 
