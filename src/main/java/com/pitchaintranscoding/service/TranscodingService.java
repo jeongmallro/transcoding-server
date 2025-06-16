@@ -23,13 +23,13 @@ public class TranscodingService {
     private final DirectoryManager directoryManager;
     private static final String HLS_OUTPUT_DIR_PATH = "build/resources/main/sp/";
 
-    public Runnable transcoding(Long spId, Path inputTempFilePath, String fileNameFormat) {
+    public Runnable createJob(Long spId, Path inputTempFilePath, String fileNameFormat) {
         return () -> {
             Path dirPath = null;
             try {
                 dirPath = Path.of(HLS_OUTPUT_DIR_PATH + spId);
 
-                directoryManager.mkdirsIfNotExists(dirPath);
+                prepareOutputDir(dirPath);
 
                 Process process = ffmpegManager.convert(inputTempFilePath, dirPath, fileNameFormat);
                 printFFmpegLog(process);
@@ -49,6 +49,10 @@ public class TranscodingService {
                 directoryManager.deleteIfExists(dirPath);
             }
         };
+    }
+
+    private void prepareOutputDir(Path dirPath) throws IOException {
+        directoryManager.mkdirsIfNotExists(dirPath);
     }
 
     private void uploadSegmentsToS3(Path dirPath, String fileNameFormat, Long spId) throws IOException {

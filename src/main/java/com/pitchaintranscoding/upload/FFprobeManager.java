@@ -22,13 +22,9 @@ public class FFprobeManager {
 
     public FFprobeResult analyze(Path originalVideoPath) throws IOException {
         try {
-            // FFprobe 실행
             Process process = convert(originalVideoPath);
-
-            // 결과 읽기
             String json = readJson(process);
 
-            // 프로세스 완료 대기
             int exitCode = process.waitFor();
             if (exitCode != 0) {
                 throw new RuntimeException("FFprobe failed with exit code: " + exitCode);
@@ -71,7 +67,6 @@ public class FFprobeManager {
         JsonNode root = mapper.readTree(json);
         JsonNode streams = root.path("streams");
 
-        // 비디오 스트림 찾기
         JsonNode videoStream = null;
         boolean hasAudio = false;
 
