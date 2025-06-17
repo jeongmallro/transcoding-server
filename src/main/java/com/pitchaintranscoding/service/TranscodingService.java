@@ -1,6 +1,7 @@
 package com.pitchaintranscoding.service;
 
-import com.pitchaintranscoding.dto.UploadType;
+import com.pitchaintranscoding.common.constant.UploadType;
+import com.pitchaintranscoding.redis.RedisPublisher;
 import com.pitchaintranscoding.upload.FFmpegManager;
 import com.pitchaintranscoding.upload.Uploader;
 import com.pitchaintranscoding.util.DirectoryManager;
@@ -21,6 +22,8 @@ public class TranscodingService {
     private final Uploader uploader;
     private final FFmpegManager ffmpegManager;
     private final DirectoryManager directoryManager;
+    private final RedisPublisher redisPublisher;
+
     private static final String HLS_OUTPUT_DIR_PATH = "build/resources/main/sp/";
 
     public Runnable createJob(Long spId, Path inputTempFilePath, String fileNameFormat) {
@@ -42,9 +45,13 @@ public class TranscodingService {
                 }
 
                 uploadSegmentsToS3(dirPath, fileNameFormat, spId);
+
+                redisPublisher.publishTranscodingSuccessEvent(spId);
             } catch (IOException | InterruptedException e) {
-                log.error("FFmpeg 트랜스코딩 실패", e);
+                redisPublisher.publishTranscodingFailEvent(spId);
+
                 Thread.currentThread().interrupt();
+
                 throw new RuntimeException("FFmpeg 트랜스코딩 실패", e);
             } finally {
                 directoryManager.deleteIfExists(inputTempFilePath);
@@ -67,7 +74,6 @@ public class TranscodingService {
             uploader.uploadFileSync(UploadType.SP, spId, localFile);
         }
     }
-
 
     private static void validateFileExtension(String fileName) {
         if (!(fileName.endsWith(".m3u8") || fileName.endsWith(".ts")))

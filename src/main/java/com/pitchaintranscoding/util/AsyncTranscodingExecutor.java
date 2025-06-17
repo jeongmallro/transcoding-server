@@ -1,5 +1,9 @@
 package com.pitchaintranscoding.util;
 
+import com.pitchaintranscoding.common.constant.EventType;
+import com.pitchaintranscoding.common.event.Event;
+import com.pitchaintranscoding.common.event.TranscodingEventPayload;
+import com.pitchaintranscoding.redis.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.ContextClosedEvent;
@@ -17,6 +21,7 @@ import java.util.concurrent.RejectedExecutionException;
 public class AsyncTranscodingExecutor {
     private final List<Long> activeTranscoding = new CopyOnWriteArrayList<>();
     private final ExecutorService executor;
+    private final RedisPublisher redisPublisher;
 
     public void execute(Long key, Runnable runnable) throws RejectedExecutionException {
         activeTranscoding.add(key);
@@ -32,8 +37,8 @@ public class AsyncTranscodingExecutor {
 
     @EventListener(ContextClosedEvent.class)
     public void shutdown() {
-        activeTranscoding.forEach(key -> {
-            // todo 메인 서버로 업로드 실패 이벤트 발행
-        });
+        activeTranscoding.forEach(
+                spId -> redisPublisher.publishTranscodingFailEvent(spId)
+        );
     }
 }
