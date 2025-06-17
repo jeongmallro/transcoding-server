@@ -1,6 +1,6 @@
 package com.pitchaintranscoding.upload;
 
-import com.pitchaintranscoding.dto.UploadType;
+import com.pitchaintranscoding.common.constant.UploadType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

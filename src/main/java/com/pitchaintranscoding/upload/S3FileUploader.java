@@ -1,6 +1,6 @@
 package com.pitchaintranscoding.upload;
 
-import com.pitchaintranscoding.dto.UploadType;
+import com.pitchaintranscoding.common.constant.UploadType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

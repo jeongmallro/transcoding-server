@@ -1,4 +1,4 @@
-package com.pitchaintranscoding.dto;
+package com.pitchaintranscoding.common.constant;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
