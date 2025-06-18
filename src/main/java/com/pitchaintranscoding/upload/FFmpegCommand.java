@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FFmpegCommand {
     private static final String FFMPEG_PATH = "src/main/resources/bin/ffmpeg";
+    private static final String MASTER_M3U8_FORMAT = "%s.m3u8";
     private static final String M3U8_FORMAT = "%s/%s_%%v.m3u8";
     private static final String TS_FORMAT = "%s/%s_%%v_%%03d.ts";
 
@@ -43,6 +44,7 @@ public class FFmpegCommand {
                 "-hls_time", "10",
                 "-hls_list_size", "0",
                 "-hls_segment_type", "mpegts",
+                "-master_pl_name", MASTER_M3U8_FORMAT.formatted(fileName),
                 "-hls_segment_filename", TS_FORMAT.formatted(dirPath, fileName),
                 M3U8_FORMAT.formatted(dirPath, fileName)
         ));
