@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class FFmpegCommand {
-    private static final String FFMPEG_PATH = "src/main/resources/bin/ffmpeg";
+    private static final String FFMPEG_PATH = "C:\\Users\\jeong\\Desktop\\project\\transcoding-server\\src\\main\\resources\\bin\\ffmpeg.exe";
     private static final String MASTER_M3U8_FORMAT = "%s.m3u8";
     private static final String M3U8_FORMAT = "%s/%s_%%v.m3u8";
     private static final String TS_FORMAT = "%s/%s_%%v_%%03d.ts";

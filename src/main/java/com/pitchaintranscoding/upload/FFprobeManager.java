@@ -18,7 +18,7 @@ import java.util.List;
 public class FFprobeManager {
     private final ObjectMapper mapper;
 
-    private static final String ffprobePath = "src/main/resources/bin/ffprobe"; //
+    private static final String ffprobePath = "C:\\Users\\jeong\\Desktop\\project\\transcoding-server\\src\\main\\resources\\bin\\ffprobe.exe"; //
 
     public FFprobeResult analyze(Path originalVideoPath) throws IOException {
         try {
