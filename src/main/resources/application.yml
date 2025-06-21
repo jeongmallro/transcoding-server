@@ -1,0 +1,63 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: pitchain
+    server: http://localhost:8080
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  redis:
+    host: localhost
+    password:
+    port: 6379
+    channel: transcoding-event
+
+cloud:
+  aws:
+    s3:
+      bucket:
+      cdn:
+    stack:
+      auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      access-key:
+      secret-key:
+
+management:
+  info:
+    java:
+      enabled: true
+    os:
+      enabled: true
+    env:
+      enabled: true
+  server:
+    port: 8081
+  endpoint:   # 개별 엔드포인트는 s 안 붙음
+    shutdown:  # 개별
+      enabled: true
+    health:
+#      show-details: always
+      show-components: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+      springframework:
+        web:
+          client:
+            RestTemplate: debug
+
+
+
