@@ -20,6 +20,7 @@ public abstract class FileUploader implements Uploader {
         try {
             tempFilePath = Files.createTempFile(TEMP_FILE_PATH_PREFIX, TEMP_FILE_PATH_SUFFIX_PREFIX + file.getOriginalFilename());
             Files.copy(file.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
+            log.info("Saving file succeeded");
         } catch (IOException e) {
             if (tempFilePath != null) {
                 deleteTemporaryFile(tempFilePath);

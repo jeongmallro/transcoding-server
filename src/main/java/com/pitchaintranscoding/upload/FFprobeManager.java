@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pitchaintranscoding.dto.FFprobeResult;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
 
 import java.io.BufferedReader;
@@ -13,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Configuration
 public class FFprobeManager {
@@ -31,6 +33,7 @@ public class FFprobeManager {
                 throw new RuntimeException("FFprobe failed with exit code: " + exitCode);
             }
 
+            log.info("Analyzing succeeded");
             return parseFFprobeResult(json);
 
         } catch (InterruptedException e) {
