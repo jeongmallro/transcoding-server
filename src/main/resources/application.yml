@@ -18,15 +18,15 @@ spring:
 cloud:
   aws:
     s3:
-      bucket:
-      cdn:
+      bucket: ${BUCKET}
+      cdn: ${CDN}
     stack:
       auto: false
     region:
       static: ap-northeast-2
     credentials:
-      access-key:
-      secret-key:
+      access-key: ${ACCESS_KEY}
+      secret-key: ${SECRET_KEY}
 
 management:
   info:
