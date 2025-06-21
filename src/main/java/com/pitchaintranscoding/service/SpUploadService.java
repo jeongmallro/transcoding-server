@@ -29,6 +29,7 @@ public class SpUploadService {
             // MultipartFile은 HTTP Request 요청 스코프가 끝나면 사라지기 때문에 비동지 작업에서 생성 불가능
             inputTempFilePath = uploader.createTempFile(file);
         } catch (Exception e) {
+            log.info("Transcoding failed");
             redisPublisher.publishTranscodingFailEvent(spId);
         }
 
@@ -38,7 +39,8 @@ public class SpUploadService {
 
 
     private static void validateContentType(MultipartFile file) {
-        if (!file.getContentType().startsWith("video")) {
+        if (!file.getContentType().startsWith("audio/mp4")) {
+            log.info("Not support this contentType");
             throw new IllegalArgumentException("지원하지 않는 파일 형식입니다. 비디오 파일만 업로드할 수 있습니다.");
         }
     }
