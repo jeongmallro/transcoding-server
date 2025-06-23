@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Objects;
 
 @Slf4j
 public abstract class FileUploader implements Uploader {
@@ -18,13 +19,15 @@ public abstract class FileUploader implements Uploader {
     public Path createTempFile(MultipartFile file) {
         Path tempFilePath = null;
         try {
-            tempFilePath = Files.createTempFile(TEMP_FILE_PATH_PREFIX, TEMP_FILE_PATH_SUFFIX_PREFIX + file.getOriginalFilename());
+            String fileName = Objects.requireNonNull(file.getOriginalFilename()).strip();
+            tempFilePath = Files.createTempFile(TEMP_FILE_PATH_PREFIX, TEMP_FILE_PATH_SUFFIX_PREFIX + fileName);
             Files.copy(file.getInputStream(), tempFilePath, StandardCopyOption.REPLACE_EXISTING);
             log.info("Saving file succeeded");
         } catch (IOException e) {
             if (tempFilePath != null) {
                 deleteTemporaryFile(tempFilePath);
             }
+            log.info("Saving file failed");
             throw new RuntimeException("파일 업로드에 실패했습니다.");
         }
         return tempFilePath;

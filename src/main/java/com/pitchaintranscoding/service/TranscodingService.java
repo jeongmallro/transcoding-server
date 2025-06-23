@@ -44,6 +44,7 @@ public class TranscodingService {
                     throw new RuntimeException("FFmpeg failed with exit code: " + exitCode);
                 }
 
+                log.info("S3 Upload started");
                 uploadSegmentsToS3(dirPath, fileNameFormat, spId);
 
                 redisPublisher.publishTranscodingSuccessEvent(spId);
@@ -82,6 +83,8 @@ public class TranscodingService {
 
     private static void validateFileName(String fileName, String uuidName) {
         if (!fileName.startsWith(uuidName)) {
+            log.info("uuidName={}", uuidName);
+            log.info("fileName={}", fileName);
             throw new IllegalArgumentException("파일 이름이 UUID와 일치하지 않습니다. 파일 이름은 " + uuidName + "로 시작해야 합니다.");
         }
     }
