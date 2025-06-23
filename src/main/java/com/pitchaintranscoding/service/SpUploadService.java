@@ -29,7 +29,7 @@ public class SpUploadService {
             // MultipartFile은 HTTP Request 요청 스코프가 끝나면 사라지기 때문에 비동지 작업에서 생성 불가능
             inputTempFilePath = uploader.createTempFile(file);
         } catch (Exception e) {
-            log.info("Transcoding failed");
+            log.info("Transcoding failed because {}", e.getMessage());
             redisPublisher.publishTranscodingFailEvent(spId);
         }
 
