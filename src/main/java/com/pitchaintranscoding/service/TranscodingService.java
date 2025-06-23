@@ -24,6 +24,7 @@ public class TranscodingService {
     private final DirectoryManager directoryManager;
     private final RedisPublisher redisPublisher;
 
+    //output 경로 확인
     private static final String HLS_OUTPUT_DIR_PATH = "C:\\Users\\jeong\\Desktop\\project\\transcoding-server\\build\\resources\\main\\sp\\";
 
     public Runnable createJob(Long spId, Path inputTempFilePath, String fileNameFormat) {
