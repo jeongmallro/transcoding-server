@@ -3,6 +3,7 @@ package com.pitchaintranscoding.upload;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pitchaintranscoding.dto.FFprobeResult;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,7 @@ public class FFprobeManager {
 
     private static final String ffprobePath = "C:\\Users\\jeong\\Desktop\\project\\transcoding-server\\src\\main\\resources\\bin\\ffprobe.exe"; //
 
+    @Timed("upload.analyze")
     public FFprobeResult analyze(Path originalVideoPath) throws IOException {
         try {
             Process process = convert(originalVideoPath);

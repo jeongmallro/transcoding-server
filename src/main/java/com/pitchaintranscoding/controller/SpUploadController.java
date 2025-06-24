@@ -1,11 +1,9 @@
 package com.pitchaintranscoding.controller;
 
 import com.pitchaintranscoding.service.SpUploadService;
+import io.micrometer.core.annotation.Counted;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RequiredArgsConstructor
@@ -13,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class SpUploadController {
     private final SpUploadService spUploadService;
 
+    @Counted("upload")
     @PostMapping("/sps/{spId}")
     public void upload(@PathVariable Long spId, @RequestParam("file") MultipartFile file) {
         spUploadService.upload(spId, file);
