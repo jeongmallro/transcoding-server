@@ -1,6 +1,7 @@
 package com.pitchaintranscoding.upload;
 
 import com.pitchaintranscoding.common.constant.UploadType;
+import io.micrometer.core.annotation.Timed;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
 
 @Component
 @RequiredArgsConstructor
@@ -25,6 +27,18 @@ public class S3FileUploader extends FileUploader {
     private String bucketName;
     private static final String BASE_URL = "https://%s.s3.amazonaws.com/%s";
     private static final String S3_OBJECT_KEY_FORMAT = "%s/%d/%s";
+
+    @Timed("upload.s3.upload")
+    public void uploadSegmentsToS3(Path dirPath, String fileNameFormat, Long spId) throws IOException {
+        for (File localFile : dirPath.toFile().listFiles()) {
+            String localFileName = localFile.getName();
+
+            validateFileName(localFileName, fileNameFormat);
+            validateFileExtension(localFileName);
+
+            uploadFileSync(UploadType.SP, spId, localFile);
+        }
+    }
 
     @Override
     public String uploadFileSync(UploadType type, Long dirIdentifier, File file) throws IOException {
@@ -60,6 +74,19 @@ public class S3FileUploader extends FileUploader {
 
     private String generateFileUrl(String fileName) {
         return BASE_URL.format(bucketName, fileName);
+    }
+
+    private static void validateFileExtension(String fileName) {
+        if (!(fileName.endsWith(".m3u8") || fileName.endsWith(".ts")))
+            throw new IllegalArgumentException("지원하지 않는 파일 확장자입니다. m3u8 및 ts 파일만 업로드할 수 있습니다.");
+    }
+
+    private static void validateFileName(String fileName, String uuidName) {
+        if (!fileName.startsWith(uuidName)) {
+            log.info("uuidName={}", uuidName);
+            log.info("fileName={}", fileName);
+            throw new IllegalArgumentException("파일 이름이 UUID와 일치하지 않습니다. 파일 이름은 " + uuidName + "로 시작해야 합니다.");
+        }
     }
 
 

@@ -17,8 +17,8 @@ import java.util.UUID;
 public class SpUploadService {
     private final Uploader uploader;
     private final AsyncTranscodingExecutor asyncTranscodingExecutor;
-    private final TranscodingService transcodingService;
     private final RedisPublisher redisPublisher;
+    private final JobService jobService;
 
     public void upload(Long spId, MultipartFile file) {
         String fileNameFormat = UUID.randomUUID().toString();
@@ -33,7 +33,7 @@ public class SpUploadService {
             redisPublisher.publishTranscodingFailEvent(spId);
         }
 
-        Runnable job = transcodingService.createJob(spId, inputTempFilePath, fileNameFormat);
+        Runnable job = createJob(spId, inputTempFilePath, fileNameFormat);
         asyncTranscodingExecutor.execute(spId, job);
     }
 
@@ -44,4 +44,9 @@ public class SpUploadService {
             throw new IllegalArgumentException("지원하지 않는 파일 형식입니다. 비디오 파일만 업로드할 수 있습니다.");
         }
     }
+
+    private Runnable createJob(Long spId, Path inputTempFilePath, String fileNameFormat) {
+        return () -> jobService.doJob(spId, inputTempFilePath, fileNameFormat);
+    }
+
 }

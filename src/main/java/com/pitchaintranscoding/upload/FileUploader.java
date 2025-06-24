@@ -1,5 +1,6 @@
 package com.pitchaintranscoding.upload;
 
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
+@Timed("upload.tempfile")
 @Slf4j
 public abstract class FileUploader implements Uploader {
 
