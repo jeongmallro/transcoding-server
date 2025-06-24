@@ -21,7 +21,7 @@ public class JobService {
     private final DirectoryManager directoryManager;
 
     //output 경로 확인
-    private static final String HLS_OUTPUT_DIR_PATH = "C:\\Users\\jeong\\Desktop\\project\\transcoding-server\\build\\resources\\main\\sp\\";
+    private static final String HLS_OUTPUT_DIR_PATH = "/home/ec2-user/output";
 
     @Timed("upload.dojob")
     public void doJob(Long spId, Path inputTempFilePath, String fileNameFormat) {

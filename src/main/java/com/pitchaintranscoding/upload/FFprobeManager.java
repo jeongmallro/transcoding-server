@@ -21,7 +21,7 @@ import java.util.List;
 public class FFprobeManager {
     private final ObjectMapper mapper;
 
-    private static final String ffprobePath = "src/main/resources/bin/ffprobe"; //
+    private static final String ffprobePath = "/home/ec2-user/bin/ffprobe";
 
     @Timed("upload.analyze")
     public FFprobeResult analyze(Path originalVideoPath) throws IOException {
