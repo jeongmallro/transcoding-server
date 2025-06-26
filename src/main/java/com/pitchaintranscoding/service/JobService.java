@@ -42,7 +42,10 @@ public class JobService {
 
             Thread.currentThread().interrupt();
 
+            log.info("S3 Upload failed because {}", e.getMessage());
             throw new RuntimeException("FFmpeg 트랜스코딩 실패", e);
+        } catch (RuntimeException e) {
+            log.info("S3 Upload failed because {}", e.getMessage());
         } finally {
             directoryManager.deleteIfExists(inputTempFilePath);
             directoryManager.deleteIfExists(dirPath);

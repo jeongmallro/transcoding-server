@@ -21,6 +21,7 @@ public class SpUploadService {
     private final JobService jobService;
 
     public void upload(Long spId, MultipartFile file) {
+        log.info("Uploading spId {} started", spId);
         String fileNameFormat = UUID.randomUUID().toString();
         Path inputTempFilePath = null;
         try {

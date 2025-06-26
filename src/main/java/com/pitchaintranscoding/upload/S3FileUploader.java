@@ -55,7 +55,7 @@ public class S3FileUploader extends FileUploader {
             log.info("S3 Upload failed because {}", e.getMessage());
             throw new RuntimeException("파일 업로드 중 오류 발생: " + e.getMessage(), e);
         }
-        log.info("S3 Upload succeeded");
+        log.info("S3 Upload succeeded {}", s3ObjectKey);
         return s3ObjectKey;
     }
 
